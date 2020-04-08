@@ -1,0 +1,12 @@
+.headerContainer {
+  display: flex;
+  align-items: center;
+  height: 10vh;
+  width: 100vw;
+  background-color: #32ace7;
+  color: white;
+  h1 {
+    height: auto;
+    width: fit-content;
+  }
+}

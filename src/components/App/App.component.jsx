@@ -1,9 +1,11 @@
 import React from 'react';
 import PostList from '../PostList/PostList.component';
 import withLayout from '../../hocs/withLayout.component';
+import styles from './App.module.scss';
+
 const App = () => (
-  <div>
-    <h1>Reddit Top Posts</h1>
+  <div className="container">
+    <h1 className={styles.appMainTitle}>Reddit Top Posts</h1>
     <PostList />
   </div>
 );

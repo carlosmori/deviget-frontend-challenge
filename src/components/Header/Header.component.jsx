@@ -1,7 +1,8 @@
 import React from 'react';
-const Header = () => (
-  <div>
-    <h1>Ring Test</h1>
+import styles from './Header.module.scss';
+export const Header = () => (
+  <div className={styles.headerContainer}>
+    <h1>Ring Frontend Test</h1>
   </div>
 );
 

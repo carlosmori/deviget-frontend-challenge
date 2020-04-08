@@ -12,8 +12,11 @@ const postSlice = createSlice({
     addPost: (state, { payload }) => {
       state.postList = payload.topPosts;
     },
+    dismissAllPosts: (state) => {
+      state.postList = [];
+    },
   },
 });
 export const { reducer, actions } = postSlice;
 
-export const { addPost } = actions;
+export const { addPost, dismissAllPosts } = actions;

@@ -1,8 +1,38 @@
-import React from 'react';
-const PostList = () => {
-  return <div>Post List</div>;
+import React, { Fragment, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import styles from './PostList.module.scss';
+import { connect } from 'react-redux';
+import Button from 'react-bootstrap/Button';
+import { dismissAllPosts } from '../../redux/ducks/posts/reducers';
+import Post from '../Post/Post.component.jsx';
+
+const PostList = ({ posts, dismissAllPosts }) => {
+  const handleDismissRefresh = useCallback(() => {
+    dismissAllPosts();
+  }, [dismissAllPosts]);
+
+  return (
+    <Fragment>
+      <div className={styles.buttonContainer}>
+        <Button onClick={handleDismissRefresh} variant="danger">
+          Dismiss All
+        </Button>
+      </div>
+      <div className={styles.postListContainer}>
+        {posts.map((post, index) => {
+          return <Post post={post} key={index} />;
+        })}
+      </div>
+    </Fragment>
+  );
+};
+const mapStateToProps = (state) => ({
+  posts: state.post.postList,
+});
+
+PostList.propTypes = {
+  posts: PropTypes.array,
+  dismissAllPosts: PropTypes.func,
 };
 
-PostList.propTypes = {};
-
-export default PostList;
+export default connect(mapStateToProps, { dismissAllPosts })(PostList);
