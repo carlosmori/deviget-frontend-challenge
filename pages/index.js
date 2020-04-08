@@ -1,5 +1,7 @@
-import Head from "next/head";
-import App from "../src/components/App/App.component";
+import React from 'react';
+import Head from 'next/head';
+import App from '../src/components/App/App.component';
+import withLayout from '../src/hocs/withLayout.component';
 const Home = () => (
   <div className="container">
     <Head>
@@ -10,4 +12,4 @@ const Home = () => (
   </div>
 );
 
-export default Home;
+export default withLayout(Home);
