@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React, { Component, Fragment } from 'react';
 import Header from '../components/Header/Header.component';
 import Footer from '../components/Footer/Footer.component';

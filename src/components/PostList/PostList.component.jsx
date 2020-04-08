@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 const PostList = () => {
   return <div>Post List</div>;
 };
