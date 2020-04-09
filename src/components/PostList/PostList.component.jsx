@@ -13,7 +13,7 @@ export const PostList = ({ posts, dismissAllPosts, fetchPosts, afterReference })
   const [postPerPage, setPostPerPage] = useState([]);
 
   useEffect(() => {
-    setPostPerPage(posts[activePage - 1] ? posts[activePage] : []);
+    setPostPerPage(posts[activePage - 1]);
   }, [activePage, posts]);
 
   const handleDismiss = useCallback(() => {
@@ -35,7 +35,7 @@ export const PostList = ({ posts, dismissAllPosts, fetchPosts, afterReference })
 
   const fetchMorePosts = useCallback(() => {
     fetchPosts({ afterReference, previousPosts: posts });
-  }, [afterReference]);
+  }, [afterReference, fetchPosts, posts]);
 
   return (
     <Fragment>
@@ -51,7 +51,7 @@ export const PostList = ({ posts, dismissAllPosts, fetchPosts, afterReference })
         )}
       </div>
       <div className={styles.postListContainer}>
-        {postPerPage.map((post) => {
+        {postPerPage?.map((post) => {
           return <Post post={post} chunk={activePage - 1} key={post.id} />;
         })}
       </div>
