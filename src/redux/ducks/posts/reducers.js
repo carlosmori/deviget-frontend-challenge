@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import fetch from 'isomorphic-fetch';
 import fromUnixTime from 'date-fns/fromUnixTime';
@@ -9,32 +10,20 @@ const initialState = {
   openPostDetail: false,
   currentChunk: null,
 };
-export const fetchPosts = createAsyncThunk('users/fetchPosts', async () => {
-  const res = await fetch(`http://www.reddit.com/r/coronavirus/top.json?limit=50`);
-  let topPosts = await res.json();
-  const postPerChunk = 6; // items per chunk
-  topPosts = topPosts.data.children.map((element) => {
-    const post = element.data;
-    return {
-      id: post.id,
-      title: post.title,
-      author: post.author_fullname,
-      hours: differenceInHours(new Date(), fromUnixTime(post.created_utc)) + ' hours ago',
-      thumbnailUrl: post.thumbnail,
-      commentsCount: post.num_comments,
-      readStatus: false,
-    };
-  });
-  const chunksPosts = topPosts.reduce((resultArray, post, index) => {
-    const chunkIndex = Math.floor(index / postPerChunk);
-    if (!resultArray[chunkIndex]) {
-      resultArray[chunkIndex] = []; // start a new chunk
-    }
-    resultArray[chunkIndex].push(post);
-    return resultArray;
-  }, []);
-  return { topPosts: chunksPosts };
-});
+
+export const fetchPosts = createAsyncThunk(
+  'users/fetchPosts',
+  async ({ afterReference, previousPosts }) => {
+    const res = await fetch(
+      `https://www.reddit.com/r/coronavirus/top.json?limit=${process.env.POST_PER_API_CALL}${
+        afterReference ? '&after=' + afterReference : ''
+      }`
+    );
+    let response = await res.json();
+    return { data: response.data, previousPosts };
+  }
+);
+
 // State mutation possible thanks to immerJs library
 const postSlice = createSlice({
   name: 'post',
@@ -66,11 +55,41 @@ const postSlice = createSlice({
       state.currentPost = {};
     },
   },
-  extraReducers: {
-    // Add reducers for additional action types here, and handle loading state as needed
-    [fetchPosts.fulfilled]: (state, { payload }) => {
-      state.postList = payload.topPosts;
-    },
+  extraReducers: (builder) => {
+    builder.addCase(fetchPosts.fulfilled, (state, { payload }) => {
+      let topPosts = [];
+      const { data, previousPosts } = payload;
+      const postPerChunk = 6; // items per chunk
+      // Normalize data
+      topPosts = data.children.map((element) => {
+        const post = element.data;
+        return {
+          id: post.id,
+          title: post.title,
+          author: post.author_fullname,
+          hours: differenceInHours(new Date(), fromUnixTime(post.created_utc)) + ' hours ago',
+          thumbnailUrl: post.thumbnail,
+          commentsCount: post.num_comments,
+          readStatus: false,
+        };
+      });
+      // Check before append more post
+      if (previousPosts) {
+        topPosts = [...previousPosts.flat(), ...topPosts];
+      }
+
+      // Split into chunks so pages know which posts to display
+      const chunksPosts = topPosts.reduce((resultArray, post, index) => {
+        const chunkIndex = Math.floor(index / postPerChunk);
+        if (!resultArray[chunkIndex]) {
+          resultArray[chunkIndex] = []; // start a new chunk
+        }
+        resultArray[chunkIndex].push(post);
+        return resultArray;
+      }, []);
+      state.postList = chunksPosts;
+      state.afterReference = data.after;
+    });
   },
 });
 export const { reducer, actions } = postSlice;
