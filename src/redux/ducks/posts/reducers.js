@@ -4,6 +4,7 @@ const initialState = {
   postList: [],
   currentPost: {},
   openPostDetail: false,
+  currentChunk: null,
 };
 
 // State mutation possible thanks to immerJs library
@@ -18,15 +19,20 @@ const postSlice = createSlice({
       state.postList = [];
     },
     dismissPost: (state, { payload }) => {
-      state.postList = state.postList.filter((posts) => posts.id !== payload.postId);
+      state.postList[payload.chunk] = state.postList[payload.chunk].filter(
+        (posts) => posts.id !== payload.postId
+      );
     },
     openPostDetail: (state, { payload }) => {
       state.openPostDetail = true;
-      state.currentPost = state.postList.find((posts) => posts.id === payload.postId);
+      state.currentPost = state.postList[payload.chunk].find(
+        (posts) => posts.id === payload.postId
+      );
+      state.currentChunk = payload.chunk;
     },
     closePostDetail: (state, { payload }) => {
       state.openPostDetail = false;
-      state.postList = state.postList.map((post) =>
+      state.postList[payload.currentChunk] = state.postList[payload.currentChunk].map((post) =>
         post.id === payload.postId ? { ...post, readStatus: true } : post
       );
       state.currentPost = {};

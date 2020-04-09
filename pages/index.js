@@ -28,7 +28,7 @@ Home.getInitialProps = async ({ reduxStore }) => {
   const res = await fetch(`http://www.reddit.com/r/coronavirus/top.json?limit=50`);
   const { data } = await res.json();
   const { dispatch } = reduxStore;
-
+  const postPerChunk = 6; // items per chunk
   const topPosts = data.children.map((element) => {
     const post = element.data;
     return {
@@ -41,8 +41,15 @@ Home.getInitialProps = async ({ reduxStore }) => {
       readStatus: false,
     };
   });
-
-  dispatch(addPost({ topPosts }));
+  const chunksPosts = topPosts.reduce((resultArray, post, index) => {
+    const chunkIndex = Math.floor(index / postPerChunk);
+    if (!resultArray[chunkIndex]) {
+      resultArray[chunkIndex] = []; // start a new chunk
+    }
+    resultArray[chunkIndex].push(post);
+    return resultArray;
+  }, []);
+  dispatch(addPost({ topPosts: chunksPosts }));
   return {};
 };
 export default withRedux(Home);

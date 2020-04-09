@@ -6,7 +6,7 @@ import styles from './PostDetail.module.scss';
 import { closePostDetail } from '../../redux/ducks/posts/reducers';
 import PropTypes from 'prop-types';
 
-export const PostDetail = ({ currentPost, showPostDetail, closePostDetail }) => {
+export const PostDetail = ({ currentPost, showPostDetail, closePostDetail, currentChunk }) => {
   const [show, setShow] = useState(showPostDetail);
   const { id, thumbnailUrl, author, hours, title, commentsCount } = currentPost;
 
@@ -15,8 +15,8 @@ export const PostDetail = ({ currentPost, showPostDetail, closePostDetail }) => 
   }, [showPostDetail]);
 
   const handleClose = useCallback(() => {
-    closePostDetail({ postId: id });
-  }, [id, closePostDetail]);
+    closePostDetail({ postId: id, currentChunk });
+  }, [id, closePostDetail, currentChunk]);
 
   return (
     <Modal show={show} onHide={handleClose} animation={true} centered>
@@ -43,11 +43,13 @@ export const PostDetail = ({ currentPost, showPostDetail, closePostDetail }) => 
 const mapStateToProps = (state) => ({
   currentPost: state.post.currentPost,
   showPostDetail: state.post.openPostDetail,
+  currentChunk: state.post.currentChunk,
 });
 PostDetail.propTypes = {
   currentPost: PropTypes.object,
   showPostDetail: PropTypes.bool,
   closePostDetail: PropTypes.func,
+  currentChunk: PropTypes.number,
 };
 
 export default connect(mapStateToProps, { closePostDetail })(PostDetail);

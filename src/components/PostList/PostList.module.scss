@@ -12,22 +12,24 @@
   @include media(xs) {
     margin-top: 3%;
   }
-  .paginator {
-    padding: 5% 0%;
-    li {
-      a {
-        @include media(xs) {
-          padding: 0.25rem 0.5rem;
-          font-size: 0.875rem;
-          line-height: 1.5;
-        }
+}
+.paginator {
+  justify-content: center;
+  padding: 5% 0%;
+  margin-bottom: 5%;
+  li {
+    a {
+      @include media(xs) {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
       }
-      span {
-        @include media(xs) {
-          padding: 0.25rem 0.5rem;
-          font-size: 0.875rem;
-          line-height: 1.5;
-        }
+    }
+    span {
+      @include media(xs) {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
       }
     }
   }

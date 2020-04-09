@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { dismissPost, openPostDetail } from '../../redux/ducks/posts/reducers';
 import PropTypes from 'prop-types';
 
-export const Post = ({ post, dismissPost, openPostDetail }) => {
+export const Post = ({ post, chunk, dismissPost, openPostDetail }) => {
   const { id, thumbnailUrl, author, hours, title, commentsCount, readStatus } = post;
   const [fade, setFade] = useState(false);
 
@@ -14,15 +14,15 @@ export const Post = ({ post, dismissPost, openPostDetail }) => {
       event.stopPropagation();
       setFade(true);
       setTimeout(() => {
-        dismissPost({ postId: id });
+        dismissPost({ postId: id, chunk });
       }, 500);
     },
-    [dismissPost, id]
+    [dismissPost, id, chunk]
   );
 
   const handleOpenPost = useCallback(() => {
-    openPostDetail({ postId: id });
-  }, [openPostDetail, id]);
+    openPostDetail({ postId: id, chunk });
+  }, [openPostDetail, id, chunk]);
 
   return (
     <div
@@ -60,5 +60,6 @@ Post.propTypes = {
   post: PropTypes.object,
   dismissPost: PropTypes.func,
   openPostDetail: PropTypes.func,
+  chunk: PropTypes.number,
 };
 export default connect(null, { dismissPost, openPostDetail })(Post);
