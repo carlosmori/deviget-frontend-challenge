@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import styles from './PostList.module.scss';
 import { connect } from 'react-redux';
 import Button from 'react-bootstrap/Button';
-import { dismissAllPosts } from '../../redux/ducks/posts/reducers';
+import { dismissAllPosts, fetchPosts } from '../../redux/ducks/posts/reducers';
 import Post from '../Post/Post.component.jsx';
 import Pagination from 'react-bootstrap/Pagination';
 
-export const PostList = ({ posts, dismissAllPosts }) => {
+export const PostList = ({ posts, dismissAllPosts, fetchPosts }) => {
+  const [refresh, setRefresh] = useState(false);
   const [activePage, setactivePage] = useState(1);
   const [postPerPage, setPostPerPage] = useState([]);
 
@@ -15,9 +16,15 @@ export const PostList = ({ posts, dismissAllPosts }) => {
     setPostPerPage(posts[activePage] ? posts[activePage] : []);
   }, [activePage, posts]);
 
-  const handleDismissRefresh = useCallback(() => {
+  const handleDismiss = useCallback(() => {
+    setRefresh(true);
     dismissAllPosts();
   }, [dismissAllPosts]);
+
+  const handleRefresh = useCallback(() => {
+    setRefresh(false);
+    fetchPosts();
+  }, [fetchPosts]);
 
   const handlePageChange = useCallback(
     (pageNumber) => {
@@ -29,9 +36,15 @@ export const PostList = ({ posts, dismissAllPosts }) => {
   return (
     <Fragment>
       <div className={styles.buttonContainer}>
-        <Button onClick={handleDismissRefresh} variant="danger">
-          Dismiss All
-        </Button>
+        {refresh ? (
+          <Button onClick={handleRefresh} variant="info">
+            Refresh
+          </Button>
+        ) : (
+          <Button onClick={handleDismiss} variant="info">
+            Dismiss All
+          </Button>
+        )}
       </div>
       <div className={styles.postListContainer}>
         {postPerPage.map((post) => {
@@ -61,6 +74,7 @@ const mapStateToProps = (state) => ({
 PostList.propTypes = {
   posts: PropTypes.array,
   dismissAllPosts: PropTypes.func,
+  fetchPosts: PropTypes.func,
 };
 
-export default connect(mapStateToProps, { dismissAllPosts })(PostList);
+export default connect(mapStateToProps, { dismissAllPosts, fetchPosts })(PostList);
