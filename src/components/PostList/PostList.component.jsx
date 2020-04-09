@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import { dismissAllPosts } from '../../redux/ducks/posts/reducers';
 import Post from '../Post/Post.component.jsx';
 
-const PostList = ({ posts, dismissAllPosts }) => {
+export const PostList = ({ posts, dismissAllPosts }) => {
   const handleDismissRefresh = useCallback(() => {
     dismissAllPosts();
   }, [dismissAllPosts]);

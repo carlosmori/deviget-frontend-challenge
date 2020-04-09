@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { dismissPost, openPostDetail } from '../../redux/ducks/posts/reducers';
 import PropTypes from 'prop-types';
 
-const Post = ({ post, dismissPost, openPostDetail }) => {
+export const Post = ({ post, dismissPost, openPostDetail }) => {
   const { id, thumbnailUrl, author, hours, title, commentsCount, readStatus } = post;
   const [fade, setFade] = useState(false);
 

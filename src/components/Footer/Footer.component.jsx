@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Footer.module.scss';
 
-const Footer = () => (
+export const Footer = () => (
   <div className={styles.footerContainer}>
     <div className={styles.developedBy}>
       <span>Developed</span> by Carlos Agustin Mori
