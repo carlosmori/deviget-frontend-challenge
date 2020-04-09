@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import Head from 'next/head';
 import fetch from 'isomorphic-fetch';
+import fromUnixTime from 'date-fns/fromUnixTime';
+import differenceInHours from 'date-fns/differenceInHours';
 import App from '../src/components/App/App.component';
 import { withRedux } from '../src/hocs/withRedux.component';
 import { addPost } from '../src/redux/ducks/posts/reducers';
@@ -33,7 +35,7 @@ Home.getInitialProps = async ({ reduxStore }) => {
       id: post.id,
       title: post.title,
       author: post.author_fullname,
-      hours: post.created_utc,
+      hours: differenceInHours(new Date(), fromUnixTime(post.created_utc)) + ' hours ago',
       thumbnailUrl: post.thumbnail,
       commentsCount: post.num_comments,
       readStatus: false,

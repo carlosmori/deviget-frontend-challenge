@@ -1,3 +1,4 @@
+@import 'public/global.scss';
 .buttonContainer {
   text-align: right;
 }
@@ -6,4 +7,28 @@
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
+  margin-top: 2%;
+  padding: 5% 0%;
+  @include media(xs) {
+    margin-top: 3%;
+  }
+  .paginator {
+    padding: 5% 0%;
+    li {
+      a {
+        @include media(xs) {
+          padding: 0.25rem 0.5rem;
+          font-size: 0.875rem;
+          line-height: 1.5;
+        }
+      }
+      span {
+        @include media(xs) {
+          padding: 0.25rem 0.5rem;
+          font-size: 0.875rem;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
 }

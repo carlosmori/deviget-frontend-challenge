@@ -1,3 +1,4 @@
+@import 'public/global.scss';
 .headerContainer {
   display: flex;
   align-items: center;
@@ -5,8 +6,13 @@
   width: 100vw;
   background-color: #32ace7;
   color: white;
+  box-shadow: 0px 3px 10px grey;
   h1 {
     height: auto;
     width: fit-content;
+    margin: 0px 5%;
+    @include media(xs) {
+      font-size: 1.5rem;
+    }
   }
 }

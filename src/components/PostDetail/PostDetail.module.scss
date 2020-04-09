@@ -1,0 +1,28 @@
+@import 'public/global.scss';
+.author {
+  margin: 10px;
+  color: gray;
+  .bold {
+    display: inline-block;
+    font-weight: bold;
+  }
+}
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .title {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  .image {
+    width: fit-content;
+    padding: 20px 0px;
+  }
+  .comments {
+    width: 100%;
+    text-align: right;
+    color: gray;
+    padding-bottom: 10px;
+  }
+}
