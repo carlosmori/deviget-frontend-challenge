@@ -1,4 +1,4 @@
-# Deviget Frontend Challengue - Carlos Mori
+# Deviget Frontend Challenge - Carlos Mori
 
 ### Project deployed with Heroku
 
